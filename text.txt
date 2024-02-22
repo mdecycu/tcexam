@@ -1,0 +1,22 @@
+server { 
+    listen    [::]:443 default ssl ipv6only=on;
+    
+    root C:/tcexam/tcexam;
+
+    server_name    exam.cycu.org;
+    ssl_certificate    C:/tcexam/fullchain.pem;
+    ssl_certificate_key    C:/tcexam/privkey.pem;
+    ssl_protocols    TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers    HIGH:!aNULL:!MD5;
+    
+    location /{ 
+        index index.html index.php;
+    }
+    
+    location ~ \.php$ {
+        fastcgi_pass   127.0.0.1:9123;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        include        fastcgi_params;
+    }
+}
